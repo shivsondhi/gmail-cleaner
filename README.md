@@ -3,10 +3,12 @@ Delete or trash multiple Gmail messages using Gmail queries.
 
 
 ## Example Queries
-- `subject:Achieve your goals`
-- `in:spam`
-- `before:2019/01/01 is:unread`
-- `label:productivity`
+```
+- subject:Achieve your goals
+- in:spam
+- before:2019/01/01 is:unread
+- label:productivity
+```
 
 Check out [more search operators](https://support.google.com/mail/answer/7190?hl=en) you can use in Gmail queries. 
 
