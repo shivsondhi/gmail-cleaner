@@ -24,7 +24,7 @@ const deleter = require('./deleter.js')
 const app = express(); 
 const server = http.createServer(app); 
 // const servers = https.createServer({ key:key, cert:cert }, app);
-const port = process.env.port || 8081; 
+const port = process.env.port || 4000; 
 
 app.use(morgan('tiny'));
 app.use(cors()); 
@@ -36,9 +36,9 @@ app.use(bodyParser.json());
 async function auth (passport) {
 	const { client_id,client_secret,redirect_uris } = JSON.parse(fs.readFileSync('api-access/web_credentials.json', 'utf-8')).web 
 	await passport.use(new GoogleStrategy({
-		clientID: client_id, // '860881662625-9bu3mj8oo4u5sijdsc5hre4hhgs9m0if.apps.googleusercontent.com',
-		clientSecret: client_secret, // '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',
-		callbackURL: '/auth/callback/' //'http://localhost:4000/auth/callback/', redirect_uris[0], 
+		clientID: client_id,
+		clientSecret: client_secret,
+		callbackURL: '/auth/callback/'
 	}, 
 	(accessToken, refreshToken, profile, done) => {
 		return done(null, profile);
