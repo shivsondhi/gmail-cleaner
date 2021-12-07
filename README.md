@@ -30,7 +30,7 @@ npm install googleapis@39 --save
 
 ## Preview
 
-<img src="readme_assets/home_page.png" width=50% height=50%>
+<img src="readme_assets/home_page.png">
 
 
-<img src="readme_assets/help_page.png" width=50% height=50%>
+<img src="readme_assets/help_page.png">
