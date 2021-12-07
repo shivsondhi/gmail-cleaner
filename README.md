@@ -16,11 +16,11 @@ Check out [more search operators](https://support.google.com/mail/answer/7190?hl
 ## Google App and Credentials  
 Before running this script you will need to create a project on the Google Cloud Platform and allow it to use the Gmail API. The steps to do that can be found [here](https://developers.google.com/workspace/guides/create-project). You will also need authorization credentials for your desktop application. The steps for that can be found [here](https://developers.google.com/workspace/guides/create-credentials). While configuring OAuth, you can select `External` application and create credentials for a Desktop application at the relevant prompts. 
 
-After these steps, you should have a JSON file with your client secret and other credentials. Download this file into `api-access/` and name it `credentials.json`. The `tokens.json` file will be generated for you automatically once you sign in using your Gmail account. 
+After these steps, you should have a JSON file with your client secret and other credentials. Download this file into `server/api-access/` and name it `credentials.json`. The `tokens.json` file will be generated for you automatically once you sign in using your Gmail account. 
 
 
 ## Dependencies 
-After cloning the repository, run the following commands: 
+After cloning the repository, run the following commands in the `server` folder: 
 
 ```
 npm init
@@ -28,4 +28,9 @@ npm install googleapis@39 --save
 ```
 
 
-#### Working on a web-app.
+## Preview
+
+<img src="readme_assets/home_page.png" width=50% height=50%>
+
+
+<img src="readme_assets/help_page.png" width=50% height=50%>

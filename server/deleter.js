@@ -1,5 +1,11 @@
 /*
 Inbox Cleaner Script. 
+
+Example queries:
+> subject:Achieve your goals
+> in:spam
+> older_than:2y is:unread
+> before:2014/01/01
 */
 
 
@@ -18,7 +24,7 @@ const TOKEN_PATH = 'api-access/token.json';
 let searchQuery = {
 	userId: 'me',
 	q: 'from:na',
-	maxResults: 100
+	maxResults: 1
 }
 // trash or delete (permanently) 
 verb = "trash"
@@ -29,7 +35,7 @@ function authAndClean() {
 	let query = searchQuery.q;
 	fs.readFile('api-access/credentials.json', (err, content) => {
 		if (err) {
-			return console.log(`Error loading client credentials: ${err}`);
+			return console.log('Error loading client credentials ', err);
 		}
 		authorize(JSON.parse(content), cleanInbox, query, verb);
 	});
@@ -37,7 +43,7 @@ function authAndClean() {
 
 
 
-// authorize user using credentials 
+// authorize user usng credentials 
 function authorize(credentials, callback) {
 	const {client_secret, client_id, redirect_uris} = credentials.installed; 
 	const OAuth2Client = new google.auth.OAuth2(
@@ -59,7 +65,7 @@ function getNewToken(OAuth2Client, callback) {
 		access_type: 'offline', 
 		scope: SCOPES, 
 	});
-	console.log(`Authorize this app by visiting this url: ${authUrl}`); 
+	console.log('Authorize this app by visiting this url: ', authUrl); 
 	const r1 = readline.createInterface({
 		input: process.stdin,
 		output: process.stdout, 
@@ -68,14 +74,14 @@ function getNewToken(OAuth2Client, callback) {
 		r1.close();
 		OAuth2Client.getToken(code, (err, token) => {
 			if (err) {
-				return console.error(`Error retrieving access token: ${err}`);
+				return console.error('Error retrieving access token: ', err);
 			}
 			OAuth2Client.setCredentials(token); 
 			fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
 				if (err) {
 					return console.log(err);
 				}
-				console.log(`Token stored to: ${TOKEN_PATH}`);
+				console.log('Token stored to ', TOKEN_PATH);
 			});
 			callback(OAuth2Client, arguments[2], arguments[3]); 
 		});
@@ -83,14 +89,14 @@ function getNewToken(OAuth2Client, callback) {
 }
 
 
-// batch delete or trash messages 
+
 var cleanInbox = function (auth, q, v) {
 	const gmail = google.gmail({version:'v1', auth}); 
 	searchQuery.q = q;
 	
 	const bulkTrashMail = async (requestBody) => {
 		this.count = 0;
-		console.log('Trashing messages now...');
+		console.log("Trashing messages now...");
 		for (var id of requestBody.ids) {
 			msg = await gmail.users.messages.trash({
 				userId: 'me',
@@ -114,7 +120,7 @@ var cleanInbox = function (auth, q, v) {
 			resource: requestBody,
 		}, (err, res) => {
 			if (err) {
-				return console.log(`API error: ${err}`);
+				return console.log('API error: ', err);
 			}
 			if (res.status < 300) {
 				console.log(`Permanently deleted ${requestBody.ids.length} emails.`);
@@ -125,10 +131,10 @@ var cleanInbox = function (auth, q, v) {
 	const findMessages = (query) => {
 		gmail.users.messages.list(query, (err, res) => {
 			if (err) {
-				return console.log(`API error: ${err}`);
+				return console.log('API error: ', err);
 			}
 			const messages = res.data.messages;
-			console.log(`messages:\n ${messages}`); 
+			console.log("messages:\n", messages); 
 			const batchReqBody = { ids: [] };
 			
 			if (messages && messages.length) {
@@ -154,10 +160,10 @@ var cleanInbox = function (auth, q, v) {
 	findMessages(searchQuery);
 }
 
-
 if (typeof require !== 'undefined' && require.main === module) {
 	authAndClean();
 }
+
 
 
 module.exports = {
